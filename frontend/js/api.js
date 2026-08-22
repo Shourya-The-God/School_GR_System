@@ -2,7 +2,8 @@
  * Centralized API client for standard fetch() communication
  */
 
-const API_BASE = '/api';
+// Replace local API base URL
+const API_BASE_URL = "https://school-gr-api.onrender.com/api";
 
 export const showToast = (message, type = 'info') => {
   let container = document.getElementById('toast-container');
