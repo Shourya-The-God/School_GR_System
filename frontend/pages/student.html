@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student GR Record - School GR System</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/students.css">
+  <link rel="stylesheet" href="/css/forms.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar no-print">
+      <div class="sidebar-header">
+        <div class="logo-icon">🏫</div>
+        <div>
+          <h2>School GR System</h2>
+          <p>Admin Portal</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="/dashboard.html" class="nav-link">📊 Dashboard</a>
+        <a href="/students.html" class="nav-link active">👥 General Register</a>
+        <a href="/import.html" class="nav-link">📄 OCR Import</a>
+        <a href="/transfers.html" class="nav-link">📜 Transfer Certs</a>
+        <a href="/audit.html" class="nav-link">🛡️ Audit Logs</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <span class="user-name" id="current-user-name">Loading...</span>
+          <span class="user-role" id="current-user-role">-</span>
+        </div>
+        <button id="btn-logout" class="btn btn-secondary btn-sm">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar no-print">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="/students.html" class="btn btn-secondary btn-sm">← Back to Directory</a>
+          <h1>Student GR Profile</h1>
+        </div>
+        <div class="top-actions">
+          <button id="btn-open-edit-modal" class="btn btn-secondary">✏️ Edit GR Record</button>
+          <button id="btn-print-gr" class="btn btn-primary">🖨️ Print GR Sheet</button>
+        </div>
+      </header>
+
+      <div class="page-body">
+        <!-- Print Header (Hidden on screen, visible on print) -->
+        <div class="print-header" style="display: none;">
+          <h2>IDEAL HIGH SCHOOL & JUNIOR COLLEGE</h2>
+          <h3>GENERAL REGISTER OF PUPILS (EXTRACT)</h3>
+          <p>Recognition Code: MH/SCH/8945</p>
+        </div>
+
+        <!-- Student Banner -->
+        <div class="student-header-banner">
+          <div class="student-info-main">
+            <h2 id="student-name">Loading Student...</h2>
+            <p style="opacity: 0.9; margin-top: 4px;">
+              General Register No: <strong id="student-gr-number">-</strong> | Class: <span id="student-class-div">-</span>
+            </p>
+          </div>
+          <div>
+            <span id="student-status-badge" class="badge badge-active">ACTIVE</span>
+          </div>
+        </div>
+
+        <!-- General Register Details Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3>General Register Entry Sheet</h3>
+          </div>
+
+          <div class="gr-sheet-grid">
+            <div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">General Register (GR) No:</span>
+                <span class="gr-field-val" id="gr-val-gr-no">-</span>
+              </div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Admission Number:</span>
+                <span class="gr-field-val" id="gr-val-adm-no">-</span>
+              </div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Gender:</span>
+                <span class="gr-field-val" id="gr-val-gender">-</span>
+              </div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Date of Birth:</span>
+                <span class="gr-field-val" id="gr-val-dob">-</span>
+              </div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Place of Birth:</span>
+                <span class="gr-field-val" id="gr-val-pob">-</span>
+              </div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Religion & Caste:</span>
+                <span class="gr-field-val"><span id="gr-val-religion">-</span> / <span id="gr-val-caste">-</span></span>
+              </div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Sub-Caste:</span>
+                <span class="gr-field-val" id="gr-val-subcaste">-</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Nationality:</span>
+                <span class="gr-field-val" id="gr-val-nationality">Indian</span>
+              </div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Mother Tongue:</span>
+                <span class="gr-field-val" id="gr-val-mother-tongue">-</span>
+              </div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Father's Name:</span>
+                <span class="gr-field-val" id="gr-val-father">-</span>
+              </div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Mother's Name:</span>
+                <span class="gr-field-val" id="gr-val-mother">-</span>
+              </div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Guardian's Name:</span>
+                <span class="gr-field-val" id="gr-val-guardian">-</span>
+              </div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Parent Contact:</span>
+                <span class="gr-field-val" id="gr-val-contact">-</span>
+              </div>
+              <div class="gr-field-row">
+                <span class="gr-field-label">Aadhar Card No:</span>
+                <span class="gr-field-val" id="gr-val-aadhar">-</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--border-color);">
+            <span class="gr-field-label">Residential Address:</span>
+            <p style="margin-top: 4px; font-weight: 500;" id="gr-val-address">-</p>
+          </div>
+        </div>
+
+        <!-- Admissions History -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Admission History</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Admission Date</th>
+                  <th>Admitted Class</th>
+                  <th>Previous School Attended</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody id="admissions-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Academic Progression History -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Academic Progression Record</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Academic Year</th>
+                  <th>Class & Div</th>
+                  <th>Result</th>
+                  <th>Percentage</th>
+                  <th>Conduct</th>
+                </tr>
+              </thead>
+              <tbody id="academic-history-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Scanned Documents / OCR Originals -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Attached Documents & Scanned GR Registers</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Document Title</th>
+                  <th>Type</th>
+                  <th>File Size</th>
+                  <th>Date Attached</th>
+                  <th>Preview</th>
+                </tr>
+              </thead>
+              <tbody id="documents-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Edit GR Modal -->
+  <div class="modal-backdrop" id="edit-student-modal">
+    <div class="modal-content" style="max-width: 750px;">
+      <div class="card-header" style="margin-bottom: 16px;">
+        <h3>Edit General Register Details</h3>
+        <button class="btn btn-secondary btn-sm" id="btn-close-edit-modal">✕</button>
+      </div>
+
+      <form id="form-edit-student">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label required">GR Number</label>
+            <input type="text" name="grNumber" id="edit-gr-number" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label required">First Name</label>
+            <input type="text" name="firstName" id="edit-first-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Middle Name</label>
+            <input type="text" name="middleName" id="edit-middle-name" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label required">Last Name</label>
+            <input type="text" name="lastName" id="edit-last-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender</label>
+            <select name="gender" id="edit-gender" class="form-control">
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" name="dateOfBirth" id="edit-dob" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Place of Birth</label>
+            <input type="text" name="birthPlace" id="edit-birth-place" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Religion</label>
+            <input type="text" name="religion" id="edit-religion" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Caste</label>
+            <input type="text" name="caste" id="edit-caste" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Father's Name</label>
+            <input type="text" name="fatherName" id="edit-father" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mother's Name</label>
+            <input type="text" name="motherName" id="edit-mother" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Parent Contact</label>
+            <input type="tel" name="parentContact" id="edit-contact" class="form-control">
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label">Address</label>
+            <textarea name="residentialAddress" id="edit-address" class="form-control"></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="/js/student.js"></script>
+</body>
+</html>

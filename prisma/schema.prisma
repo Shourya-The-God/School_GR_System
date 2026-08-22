@@ -1,0 +1,230 @@
+// Prisma schema for School General Register (GR) & Student Management System
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique // "ADMIN", "PRINCIPAL", "CLERK", "TEACHER"
+  description String?
+  users       User[]
+  createdAt   DateTime @default(now())
+}
+
+model User {
+  id           String      @id @default(uuid())
+  username     String      @unique
+  email        String      @unique
+  passwordHash String
+  fullName     String
+  isActive     Boolean     @default(true)
+  roleId       String
+  role         Role        @relation(fields: [roleId], references: [id])
+  auditLogs    AuditLog[]
+  createdImports OCRImport[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([roleId])
+}
+
+model Class {
+  id                String                   @id @default(uuid())
+  name              String                   @unique // e.g. "1st", "10th"
+  numericRank       Int                      @default(1)
+  divisions         Division[]
+  students          Student[]
+  academicHistories StudentAcademicHistory[]
+  createdAt         DateTime                 @default(now())
+}
+
+model Division {
+  id                String                   @id @default(uuid())
+  name              String                   // e.g. "A", "B", "C"
+  classId           String
+  class             Class                    @relation(fields: [classId], references: [id])
+  students          Student[]
+  academicHistories StudentAcademicHistory[]
+  createdAt         DateTime                 @default(now())
+
+  @@unique([classId, name])
+  @@index([classId])
+}
+
+model Student {
+  id                  String                   @id @default(uuid())
+  grNumber            String                   @unique // General Register Number
+  admissionNumber     String?                  @unique
+  firstName           String
+  middleName          String?
+  lastName            String
+  fullName            String                   // Searchable index
+  gender              String                   // "MALE", "FEMALE", "OTHER"
+  dateOfBirth         DateTime
+  birthPlace          String?
+  religion            String?
+  caste               String?
+  subCaste            String?
+  nationality         String                   @default("Indian")
+  motherTongue        String?
+  aadharNumber        String?                  @unique
+
+  // Parents / Guardian
+  fatherName          String?
+  motherName          String?
+  guardianName        String?
+  parentContact       String?
+  emergencyContact    String?
+  residentialAddress  String?
+
+  // Academic status
+  status              String                   @default("ACTIVE") // "ACTIVE", "TRANSFERRED", "ALUMNI", "EXPELLED"
+  currentClassId      String?
+  currentClass        Class?                   @relation(fields: [currentClassId], references: [id])
+  currentDivisionId   String?
+  currentDivision     Division?                @relation(fields: [currentDivisionId], references: [id])
+  rollNumber          Int?
+
+  admissions          Admission[]
+  academicHistory     StudentAcademicHistory[]
+  transfers           Transfer[]
+  documents           Document[]
+  ocrRecord           OCRRecord?
+
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
+
+  @@index([grNumber])
+  @@index([admissionNumber])
+  @@index([fullName])
+  @@index([status])
+  @@index([currentClassId])
+  @@index([currentDivisionId])
+}
+
+model Admission {
+  id              String    @id @default(uuid())
+  studentId       String
+  student         Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  admissionDate   DateTime
+  admittedClass   String
+  previousSchool  String?
+  lastAttendedStd String?
+  remarks         String?
+  createdAt       DateTime  @default(now())
+
+  @@index([studentId])
+}
+
+model StudentAcademicHistory {
+  id           String    @id @default(uuid())
+  studentId    String
+  student      Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  academicYear String    // e.g. "2024-2025"
+  classId      String
+  class        Class     @relation(fields: [classId], references: [id])
+  divisionId   String?
+  division     Division? @relation(fields: [divisionId], references: [id])
+  result       String?   // "Passed", "Promoted", "Detained"
+  percentage   Float?
+  conduct      String?
+  attendance   Float?
+  createdAt    DateTime  @default(now())
+
+  @@index([studentId])
+  @@index([academicYear])
+}
+
+model Transfer {
+  id                 String    @id @default(uuid())
+  studentId          String
+  student            Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  tcNumber           String    @unique
+  applicationDate    DateTime  @default(now())
+  issueDate          DateTime?
+  reasonForLeaving   String
+  progressReport     String?
+  conduct            String?
+  leavingDate        DateTime
+  destinationSchool  String?
+  status             String    @default("ISSUED") // "PENDING", "ISSUED", "CANCELLED"
+  remarks            String?
+  createdAt          DateTime  @default(now())
+
+  @@index([studentId])
+  @@index([tcNumber])
+}
+
+model Document {
+  id          String   @id @default(uuid())
+  studentId   String?
+  student     Student? @relation(fields: [studentId], references: [id], onDelete: SetNull)
+  title       String
+  fileType    String   // "image/jpeg", "image/png", "application/pdf"
+  fileSize    Int
+  filePath    String   // Relative storage path
+  uploadedBy  String?
+  createdAt   DateTime @default(now())
+
+  @@index([studentId])
+}
+
+model OCRImport {
+  id               String       @id @default(uuid())
+  batchName        String
+  originalFile     String
+  fileType         String
+  fileSize         Int
+  status           String       @default("PENDING") // "PENDING", "PROCESSING", "COMPLETED", "FAILED"
+  totalRecords     Int          @default(0)
+  processedRecords Int          @default(0)
+  createdById      String?
+  createdBy        User?        @relation(fields: [createdById], references: [id])
+  ocrRecords       OCRRecord[]
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+}
+
+model OCRRecord {
+  id                 String    @id @default(uuid())
+  importId           String
+  import             OCRImport @relation(fields: [importId], references: [id], onDelete: Cascade)
+  pageNumber         Int       @default(1)
+  rawExtractedText   String
+  parsedDataJson     String    // JSON string containing extracted candidate fields
+  confidenceScores   String    // JSON string containing per-field & overall confidence scores
+  verificationStatus String    @default("PENDING_REVIEW") // "PENDING_REVIEW", "VERIFIED", "REJECTED"
+  reviewedBy         String?
+  reviewedAt         DateTime?
+  studentId          String?   @unique
+  student            Student?  @relation(fields: [studentId], references: [id])
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([importId])
+  @@index([verificationStatus])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  action     String   // "CREATE_STUDENT", "UPDATE_GR", "ISSUE_TC", "VERIFY_OCR", "LOGIN"
+  entityType String   // "Student", "Transfer", "OCRRecord", "User"
+  entityId   String?
+  oldValue   String?  // JSON string
+  newValue   String?  // JSON string
+  ipAddress  String?
+  userAgent  String?
+  timestamp  DateTime @default(now())
+
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([timestamp])
+}

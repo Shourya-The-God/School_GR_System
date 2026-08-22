@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - School General Register (GR) System</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/forms.css">
+  <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      padding: 20px;
+    }
+    .login-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: var(--shadow-lg);
+    }
+    .login-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .login-header .school-logo {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+    .login-header h1 {
+      font-size: 1.4rem;
+      color: var(--text-main);
+      font-weight: 700;
+    }
+    .login-header p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .demo-credentials {
+      margin-top: 24px;
+      padding: 12px;
+      background: var(--primary-light);
+      border: 1px solid var(--primary-border);
+      border-radius: var(--radius-md);
+      font-size: 0.8rem;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="school-logo">🏫</div>
+        <h1>School GR & Student Portal</h1>
+        <p>Digital General Register Management & OCR Verification</p>
+      </div>
+
+      <form id="form-login">
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label required" for="username">Username or Email</label>
+          <input type="text" id="username" name="username" class="form-control" placeholder="admin" required autofocus autocomplete="username">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label class="form-label required" for="password">Password</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;">
+          Sign In to Portal
+        </button>
+      </form>
+
+      <div class="demo-credentials">
+        <strong>Default Admin Credentials:</strong><br>
+        Username: <code>admin</code> | Password: <code>Admin@12345</code><br>
+        <span style="font-size: 0.75rem; color: var(--text-muted);">(Clerk: <code>clerk</code> / <code>Admin@12345</code>)</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { login } from '/js/auth.js';
+
+    document.getElementById('form-login').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const u = document.getElementById('username').value;
+      const p = document.getElementById('password').value;
+      await login(u, p);
+    });
+  </script>
+</body>
+</html>

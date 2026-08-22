@@ -1,0 +1,185 @@
+/* Table, Search toolbar, and Student GR Sheet styles */
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.search-input-group {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-grow: 1;
+  max-width: 400px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 9px 14px 9px 36px;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  outline: none;
+  background-color: var(--bg-surface);
+}
+
+.search-input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Data Table */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.data-table th {
+  background-color: #f8fafc;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-main);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.data-table .gr-number-tag {
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--primary-border);
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+}
+
+.pagination-info {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 6px;
+}
+
+/* Student 360 GR Sheet View */
+.student-header-banner {
+  background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+  color: #ffffff;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.student-info-main h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.gr-sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.gr-field-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border-color);
+  font-size: 0.9rem;
+}
+
+.gr-field-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.gr-field-val {
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: right;
+}
+
+/* Print Sheet Styling */
+@media print {
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+  .sidebar, .top-bar, .no-print, .btn {
+    display: none !important;
+  }
+  .main-content {
+    margin: 0;
+    padding: 0;
+  }
+  .page-body {
+    padding: 0;
+  }
+  .card {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+  .print-header {
+    display: block !important;
+    text-align: center;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+}

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>General Register (GR) - Students Directory</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/students.css">
+  <link rel="stylesheet" href="/css/forms.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">🏫</div>
+        <div>
+          <h2>School GR System</h2>
+          <p>Admin Portal</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="/dashboard.html" class="nav-link">📊 Dashboard</a>
+        <a href="/students.html" class="nav-link active">👥 General Register</a>
+        <a href="/import.html" class="nav-link">📄 OCR Import</a>
+        <a href="/transfers.html" class="nav-link">📜 Transfer Certs</a>
+        <a href="/audit.html" class="nav-link">🛡️ Audit Logs</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <span class="user-name" id="current-user-name">Loading...</span>
+          <span class="user-role" id="current-user-role">-</span>
+        </div>
+        <button id="btn-logout" class="btn btn-secondary btn-sm">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h1>General Register (GR) Directory</h1>
+        <div class="top-actions">
+          <button id="btn-export-csv" class="btn btn-secondary">📥 Export CSV</button>
+          <button id="btn-open-new-student-modal" class="btn btn-primary">➕ New Admission</button>
+        </div>
+      </header>
+
+      <div class="page-body">
+        <div class="card">
+          <!-- Toolbar & Filters -->
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="search-input" class="search-input" placeholder="Search by GR No, Name, Admission No...">
+            </div>
+
+            <div class="filter-group">
+              <select id="filter-class" class="form-control" style="width: 140px;">
+                <option value="">All Classes</option>
+              </select>
+
+              <select id="filter-status" class="form-control" style="width: 140px;">
+                <option value="">All Statuses</option>
+                <option value="ACTIVE">Active</option>
+                <option value="TRANSFERRED">Transferred</option>
+                <option value="ALUMNI">Alumni</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Students Data Table -->
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>GR Number</th>
+                  <th>Student Full Name</th>
+                  <th>Gender</th>
+                  <th>Date of Birth</th>
+                  <th>Class & Div</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="students-tbody">
+                <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading students...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination">
+            <span class="pagination-info" id="pagination-info">-</span>
+            <div class="pagination-controls" id="pagination-controls"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- New Student Admission Modal -->
+  <div class="modal-backdrop" id="new-student-modal">
+    <div class="modal-content" style="max-width: 750px;">
+      <div class="card-header" style="margin-bottom: 16px;">
+        <h3>New Student Admission (General Register Entry)</h3>
+        <button class="btn btn-secondary btn-sm" id="btn-close-modal">✕</button>
+      </div>
+
+      <form id="form-new-student">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label required">GR Number</label>
+            <input type="text" name="grNumber" class="form-control" placeholder="GR-1004" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Admission Number</label>
+            <input type="text" name="admissionNumber" class="form-control" placeholder="ADM-2024-05">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">First Name</label>
+            <input type="text" name="firstName" class="form-control" placeholder="Rohan" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Middle Name</label>
+            <input type="text" name="middleName" class="form-control" placeholder="Vijay">
+          </div>
+          <div class="form-group">
+            <label class="form-label required">Last Name</label>
+            <input type="text" name="lastName" class="form-control" placeholder="Kulkarni" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Gender</label>
+            <select name="gender" class="form-control" required>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label required">Date of Birth</label>
+            <input type="date" name="dateOfBirth" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Birth Place</label>
+            <input type="text" name="birthPlace" class="form-control" placeholder="Pune">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Religion</label>
+            <input type="text" name="religion" class="form-control" placeholder="Hindu">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Caste / Category</label>
+            <input type="text" name="caste" class="form-control" placeholder="General / OBC / SC / ST">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Father's Name</label>
+            <input type="text" name="fatherName" class="form-control" placeholder="Vijay Kulkarni">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mother's Name</label>
+            <input type="text" name="motherName" class="form-control" placeholder="Sneha Kulkarni">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Parent Contact Number</label>
+            <input type="tel" name="parentContact" class="form-control" placeholder="9876543210">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Admitted Class</label>
+            <select name="currentClassId" id="modal-student-class" class="form-control">
+              <option value="">-- Select Class --</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">Residential Address</label>
+            <textarea name="residentialAddress" class="form-control" placeholder="Street, Area, City"></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save Student Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="/js/students.js"></script>
+</body>
+</html>

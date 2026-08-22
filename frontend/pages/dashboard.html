@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - School General Register</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/students.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">🏫</div>
+        <div>
+          <h2>School GR System</h2>
+          <p>Admin Portal</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="/dashboard.html" class="nav-link active">📊 Dashboard</a>
+        <a href="/students.html" class="nav-link">👥 General Register</a>
+        <a href="/import.html" class="nav-link">📄 OCR Import</a>
+        <a href="/transfers.html" class="nav-link">📜 Transfer Certs</a>
+        <a href="/audit.html" class="nav-link">🛡️ Audit Logs</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <span class="user-name" id="current-user-name">Loading...</span>
+          <span class="user-role" id="current-user-role">-</span>
+        </div>
+        <button id="btn-logout" class="btn btn-secondary btn-sm" title="Sign Out">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h1>Dashboard Overview</h1>
+        <div class="top-actions">
+          <a href="/import.html" class="btn btn-primary">➕ Upload GR Scan</a>
+        </div>
+      </header>
+
+      <div class="page-body">
+        <!-- KPI Metrics -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon primary">👥</div>
+            <div class="kpi-data">
+              <span class="kpi-label">Total Registered</span>
+              <span class="kpi-value" id="kpi-total-students">-</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon success">🎓</div>
+            <div class="kpi-data">
+              <span class="kpi-label">Active Students</span>
+              <span class="kpi-value" id="kpi-active-students">-</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon warning">📜</div>
+            <div class="kpi-data">
+              <span class="kpi-label">Transferred / TC</span>
+              <span class="kpi-value" id="kpi-transferred-students">-</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon accent">🔍</div>
+            <div class="kpi-data">
+              <span class="kpi-label">Pending OCR Review</span>
+              <span class="kpi-value" id="kpi-pending-ocr">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Analytics (Chart.js) -->
+        <div class="charts-grid">
+          <div class="card chart-card">
+            <div class="card-header">
+              <h3>Class-wise Active Enrollment</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="enrollmentChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card chart-card">
+            <div class="card-header">
+              <h3>Gender Demographic Breakdown</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="genderChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Registrations Table -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Recent Student Admissions</h3>
+            <a href="/students.html" class="btn btn-secondary btn-sm">View All Students →</a>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>GR Number</th>
+                  <th>Student Name</th>
+                  <th>Class & Div</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="recent-students-tbody">
+                <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Loading records...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/js/dashboard.js"></script>
+</body>
+</html>
