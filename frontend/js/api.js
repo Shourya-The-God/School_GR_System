@@ -3,7 +3,7 @@
  */
 
 // Replace local API base URL
-const API_BASE_URL = "https://school-gr-system.onrender.com/api/auth/login";
+const API_BASE = "https://school-gr-system.onrender.com/api/auth/login";
 
 export const showToast = (message, type = 'info') => {
   let container = document.getElementById('toast-container');
