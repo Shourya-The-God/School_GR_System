@@ -39,7 +39,7 @@ app.use(helmet({
 }));
 
 //CORS
-const cors = require('cors');
+
 app.use(cors({
   origin: ['https://your-username.github.io', 'http://localhost:3000'],
   credentials: true
