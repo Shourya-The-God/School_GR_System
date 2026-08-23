@@ -3,7 +3,13 @@
  */
 
 // Replace local API base URL
-const API_BASE = "https://school-gr-system.onrender.com/api";
+const BACKEND_RENDER_URL = "https://school-gr-system.onrender.com/api"; // <-- Replace with your actual Render backend URL
+
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5000/api' // or your local port
+  : window.location.hostname.includes('github.io')
+    ? BACKEND_RENDER_URL
+    : '/api';
 
 export const showToast = (message, type = 'info') => {
   let container = document.getElementById('toast-container');
