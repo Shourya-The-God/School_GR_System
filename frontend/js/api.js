@@ -2,11 +2,10 @@
  * Centralized API client for standard fetch() communication
  */
 
-// Replace local API base URL
-const BACKEND_RENDER_URL = "https://school-gr-system.onrender.com/api"; // <-- Replace with your actual Render backend URL
+const BACKEND_RENDER_URL = "https://school-gr-system.onrender.com/api";
 
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'http://localhost:5000/api' // or your local port
+  ? 'http://localhost:5000/api'
   : window.location.hostname.includes('github.io')
     ? BACKEND_RENDER_URL
     : '/api';
@@ -55,18 +54,19 @@ export const apiRequest = async (endpoint, options = {}) => {
   };
 
   try {
-    const response = await fetch(`${API_BASE}${endpoint}`, config);
+    // Fixed: using API_BASE_URL
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
     // Handle 401 Unauthorized (session expired)
     if (response.status === 401) {
       if (!window.location.pathname.includes('login.html')) {
         localStorage.removeItem('gr_auth_token');
         localStorage.removeItem('gr_user');
-        window.location.href = '/login.html';
+        window.location.href = './login.html';
       }
     }
 
-    // Handle non-JSON responses (e.g. CSV downloads or binary streams)
+    // Handle non-JSON responses
     const contentType = response.headers.get('content-type') || '';
     if (contentType.includes('text/csv') || contentType.includes('application/octet-stream') || contentType.includes('application/pdf')) {
       if (!response.ok) throw new Error('Failed to download file.');
