@@ -17,11 +17,11 @@
     }
     .login-card {
       background: #ffffff;
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-lg, 12px);
       padding: 40px 36px;
       width: 100%;
       max-width: 440px;
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-lg, 0 10px 25px rgba(0, 0, 0, 0.15));
     }
     .login-header {
       text-align: center;
@@ -33,22 +33,22 @@
     }
     .login-header h1 {
       font-size: 1.4rem;
-      color: var(--text-main);
+      color: var(--text-main, #1e293b);
       font-weight: 700;
     }
     .login-header p {
       font-size: 0.85rem;
-      color: var(--text-muted);
+      color: var(--text-muted, #64748b);
       margin-top: 4px;
     }
     .demo-credentials {
       margin-top: 24px;
       padding: 12px;
-      background: var(--primary-light);
-      border: 1px solid var(--primary-border);
-      border-radius: var(--radius-md);
+      background: var(--primary-light, #eff6ff);
+      border: 1px solid var(--primary-border, #bfdbfe);
+      border-radius: var(--radius-md, 8px);
       font-size: 0.8rem;
-      color: var(--primary);
+      color: var(--primary, #1d4ed8);
     }
   </style>
 </head>
@@ -72,7 +72,7 @@
           <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;">
+        <button type="submit" id="btn-submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;">
           Sign In to Portal
         </button>
       </form>
@@ -86,13 +86,31 @@
   </div>
 
   <script type="module">
-    import { login } from '/js/auth.js';
+    // Fixed: Use relative './js/auth.js' (or './auth.js' if in the same folder)
+    import { initAuth, login } from './js/auth.js';
 
-    document.getElementById('form-login').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const u = document.getElementById('username').value;
+    // Auto check if already logged in
+    initAuth();
+
+    const form = document.getElementById('form-login');
+    const submitBtn = document.getElementById('btn-submit');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault(); // Prevents default GET submit & page reload
+
+      const u = document.getElementById('username').value.trim();
       const p = document.getElementById('password').value;
-      await login(u, p);
+
+      try {
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Signing in...';
+        await login(u, p);
+      } catch (err) {
+        console.error('Login failed:', err);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Sign In to Portal';
+      }
     });
   </script>
 </body>
