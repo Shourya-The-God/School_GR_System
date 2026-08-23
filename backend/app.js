@@ -41,7 +41,7 @@ app.use(helmet({
 //CORS
 
 app.use(cors({
-  origin: ['https://your-username.github.io', 'http://localhost:3000'],
+  origin: ['https://your-username.github.io', 'http://localhost:3000', 'https://shourya-the-god.github.io'],
   credentials: true
 }));
 
